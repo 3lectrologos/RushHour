@@ -35,11 +35,7 @@ public class Astar {
 		return -1;
 	}
 	
-	private void addNeighbors(State conststate) {
-		State state = conststate.clone();
-		state.setSteps(state.getSteps() + 1);
-		int sizex = state.getDimensions().getX(),
-		    sizey = state.getDimensions().getY();
+	private boolean[][] createMap(State state, int sizex, int sizey) {
 		boolean[][] map = new boolean[sizex][sizey];
 		Car[] cars = state.getCars();
 		
@@ -60,6 +56,17 @@ public class Astar {
 					map[c.getStart().getX()][i] = true;
 			}
 		}
+		
+		return map;
+	}
+	
+	private void addNeighbors(State conststate) {
+		State state = conststate.clone();
+		state.setSteps(state.getSteps() + 1);
+		int sizex = state.getDimensions().getX(),
+		    sizey = state.getDimensions().getY();
+		Car[] cars = state.getCars();
+		boolean[][] map = createMap(state, sizex, sizey);
 		
 		for(int i = 0; i < cars.length; i++) {
 			Car c = cars[i];
