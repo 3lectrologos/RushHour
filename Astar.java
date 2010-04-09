@@ -23,7 +23,7 @@ public class Astar {
 				System.out.printf("---- Loop (visited size = %d) Queue poll:\n", visited.size());
 				System.out.println(state);
 			}
-			if(state.isFinal()) {
+			if(State.isFinal(state)) {
 				System.out.println(state);
 				return state.getSteps() + 1;
 			}
