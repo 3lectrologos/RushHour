@@ -87,6 +87,8 @@ public class State implements Comparable<State> {
 	}
 	
 	public static boolean exitIsHorizontal(State state) {
+		if(state == null)
+			System.out.println("Debug state == null");
 		return (state.exit.getX() == 0) || (state.exit.getX() == state.dimensions.getX() - 1);
 	}
 

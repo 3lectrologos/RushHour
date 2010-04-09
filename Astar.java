@@ -1,38 +1,54 @@
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.PriorityQueue;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 
-public class Astar {
-	private HashMap<State, Boolean> visited;
-	private PriorityQueue<State> queue;
+public class Astar implements Runnable {
+	private static Map<State, Boolean> visited;
+	private static BlockingQueue<State> queue;
 	private static boolean DEBUG = false;
+	private static CyclicBarrier barrier;
 	
-	public Astar(State initial, Heuristic heuristic) {
-		visited = new HashMap<State, Boolean>();
-		queue = new PriorityQueue<State>();
+	public Astar(State initial, Heuristic heuristic, int nthreads) {
+		visited = Collections.synchronizedMap(new HashMap<State, Boolean>());
+		queue = new PriorityBlockingQueue<State>();
+		barrier = new CyclicBarrier(nthreads);
 		
 		initial.setHeuristic(heuristic);
 		queue.offer(initial);
 	}
 	
-	public int run() {
-		while(!queue.isEmpty()) {
-			State state = queue.poll();
-			if(DEBUG) {
-				System.out.printf("---- Loop (visited size = %d) Queue poll:\n", visited.size());
-				System.out.println(state);
+	public void run() {
+		try {
+			barrier.await();
+			while(true) {
+				State state;
+					state = queue.poll(50, TimeUnit.MILLISECONDS);
+				if(DEBUG) {
+					System.out.printf("---- Loop (visited size = %d) Queue poll:\n", visited.size());
+					System.out.println(state);
+				}
+				if(state == null)
+					return;
+				if(State.isFinal(state)) {
+					System.out.printf("Thread %s: %d\n", Thread.currentThread().getName(), state.getSteps() + 1);
+					return;
+				}
+				
+				visited.put(state, true);
+				addNeighbors(state);
 			}
-			if(State.isFinal(state)) {
-				System.out.println(state);
-				return state.getSteps() + 1;
-			}
-			
-			visited.put(state, true);
-			addNeighbors(state);
+		} catch(InterruptedException e) {
+			return;
+		} catch(BrokenBarrierException e) {
+			System.out.println("Broken barrier");
+			return;
 		}
-		
-		return -1;
 	}
 	
 	private boolean[][] createMap(State state, int sizex, int sizey) {
@@ -139,17 +155,6 @@ public class Astar {
 				while(y2 < state.getDimensions().getY() && !map[x][y2]) {
 					c.getStart().setY(y1);
 					c.getEnd().setY(y2);
-					if(DEBUG) {
-						System.out.printf("Contains key: %b\n", visited.containsKey(state));
-						System.out.println("Visited contents:");
-						Iterator<State> it = visited.keySet().iterator();
-						while(it.hasNext()) {
-							State next = it.next();
-							System.out.printf("Hash codes: %d, %d\n", state.hashCode(), next.hashCode());
-							System.out.printf("State equals next: %b\n", state.equals(next));
-						}
-						System.out.println("Visited contents end\n");
-					}
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						queue.offer(clone);

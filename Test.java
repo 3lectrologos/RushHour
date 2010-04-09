@@ -1,11 +1,15 @@
 
 public class Test {
 	public static void main(String args[]) {
-		int arg;
+		int arg, nthreads;
 		if(args.length > 0)
 			arg= Integer.parseInt(args[0]);
 		else
 			arg = 7;
+		if(args.length > 1)
+			nthreads = Integer.parseInt(args[1]);
+		else
+			nthreads = 4;
 
 		State state = state1();
 		switch(arg) {
@@ -38,10 +42,13 @@ public class Test {
 			break;
 		}
 	    
-	    Astar a = new Astar(state, new SimpleHeuristic());
+	    Astar a = new Astar(state, new SimpleHeuristic(), nthreads);
 	    System.out.println("Initial state:");
 	    System.out.println(state);
-	    System.out.println(a.run());
+
+	    for(int i = 0; i < nthreads; i++) {
+		    (new Thread(a)).start();
+	    }
 	}
 	
 	private static State state1() {
