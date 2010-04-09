@@ -1,7 +1,11 @@
 
 public class Test {
 	public static void main(String args[]) {
-		int arg = Integer.parseInt(args[0]);
+		int arg;
+		if(args.length > 0)
+			arg= Integer.parseInt(args[0]);
+		else
+			arg = 7;
 
 		State state = state1();
 		switch(arg) {
