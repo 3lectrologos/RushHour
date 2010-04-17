@@ -86,65 +86,67 @@ public class State implements Comparable<State> {
 		       Arrays.equals(cars, state.cars);
 	}
 	
-	public boolean exitIsHorizontal() {
-		return (exit.getX() == 0) || (exit.getX() == dimensions.getX() - 1);
+	public static boolean exitIsHorizontal(State state) {
+		if(state == null)
+			System.out.println("Debug state == null");
+		return (state.exit.getX() == 0) || (state.exit.getX() == state.dimensions.getX() - 1);
 	}
 
-	private int blockingCarsHorizontal() {
+	private static int blockingCarsHorizontal(State state) {
 		int result = 0, x1, x2;
-		int line = exit.getY();
+		int line = state.exit.getY();
 		
-		if(exit.getX() == 0) {
+		if(state.exit.getX() == 0) {
 			x1 = 0;
-			x2 = cars[0].getStart().getX();
+			x2 = state.cars[0].getStart().getX();
 		}
 		else {
-			x1 = cars[0].getEnd().getX();
-			x2 = dimensions.getX() - 1;
+			x1 = state.cars[0].getEnd().getX();
+			x2 = state.dimensions.getX() - 1;
 		}
 		
-		for(int i = 1; i < cars.length; i++) {
-			if(cars[i].crossesHorizontal(line) &&
-			   cars[i].getStart().getX() >= x1 &&
-			   cars[i].getStart().getX() <= x2)
+		for(int i = 1; i < state.cars.length; i++) {
+			if(state.cars[i].crossesHorizontal(line) &&
+			   state.cars[i].getStart().getX() >= x1 &&
+			   state.cars[i].getStart().getX() <= x2)
 				result++;
 		}
 		
 		return result;
 	}
 	
-	private int blockingCarsVertical() {
+	private static int blockingCarsVertical(State state) {
 		int result = 0, y1, y2;
-		int line = exit.getX();
+		int line = state.exit.getX();
 		
-		if(exit.getY() == 0) {
+		if(state.exit.getY() == 0) {
 			y1 = 0;
-			y2 = cars[0].getStart().getY();
+			y2 = state.cars[0].getStart().getY();
 		}
 		else {
-			y1 = cars[0].getEnd().getY();
-			y2 = dimensions.getY() - 1;
+			y1 = state.cars[0].getEnd().getY();
+			y2 = state.dimensions.getY() - 1;
 		}
 		
-		for(int i = 1; i < cars.length; i++) {
-			if(cars[i].crossesVertical(line) &&
-			   cars[i].getStart().getY() >= y1 &&
-			   cars[i].getStart().getY() <= y2)
+		for(int i = 1; i < state.cars.length; i++) {
+			if(state.cars[i].crossesVertical(line) &&
+			   state.cars[i].getStart().getY() >= y1 &&
+			   state.cars[i].getStart().getY() <= y2)
 				result++;
 		}
 		
 		return result;
 	}
 	
-	public int blockingCars() {
-		if(exitIsHorizontal())
-			return blockingCarsHorizontal();
+	public static int blockingCars(State state) {
+		if(exitIsHorizontal(state))
+			return blockingCarsHorizontal(state);
 		else
-			return blockingCarsVertical();
+			return blockingCarsVertical(state);
 	}
 	
-	public boolean isFinal() {
-		return blockingCars() == 0;
+	public static boolean isFinal(State state) {
+		return blockingCars(state) == 0;
 	}
 	
 	public String toString() {

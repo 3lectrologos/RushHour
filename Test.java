@@ -1,11 +1,15 @@
 
 public class Test {
 	public static void main(String args[]) {
-		int arg;
+		int arg, nthreads;
 		if(args.length > 0)
 			arg= Integer.parseInt(args[0]);
 		else
 			arg = 7;
+		if(args.length > 1)
+			nthreads = Integer.parseInt(args[1]);
+		else
+			nthreads = 4;
 
 		State state = state1();
 		switch(arg) {
@@ -46,10 +50,13 @@ public class Test {
 		
 		boolean debug = false;
 	    
-	    Astar a = new Astar(state, new SimpleHeuristic(), debug);
+	    Astar a = new Astar(state, new SimpleHeuristic(), nthreads);
 	    System.out.println("Initial state:");
 	    System.out.println(state);
-	    System.out.println(a.run());
+
+	    for(int i = 0; i < nthreads; i++) {
+		    (new Thread(a)).start();
+	    }
 	}
 	
 	private static State state1() {
@@ -215,7 +222,7 @@ public class Test {
 	}
 	
 	private static State state11() {
-		Car[] cars = new Car[24];
+		Car[] cars = new Car[25];
 	    cars[0] = new Car(0, new Point(3, 2), new Point(4, 2));
 	    cars[1] = new Car(1, new Point(0, 0), new Point(0, 2));
 	    cars[2] = new Car(2, new Point(1, 0), new Point(2, 0));
@@ -240,9 +247,11 @@ public class Test {
 	    cars[20] = new Car(20, new Point(9, 3), new Point(9, 4));
 	    cars[21] = new Car(21, new Point(10, 4), new Point(11, 4));
 	    cars[22] = new Car(22, new Point(6, 5), new Point(7, 5));
-	    cars[23] = new Car(23, new Point(8, 4), new Point(8, 5));
-/*	    cars[24] = new Car(24, new Point(9, 5), new Point(10, 5));*/
+//	    cars[23] = new Car(23, new Point(8, 4), new Point(8, 5));
+	    cars[23] = new Car(24, new Point(9, 5), new Point(10, 5));
 	    
-	    return new State(new Point(12, 6), cars, new Point(11, 2));
+	    cars[24] = new Car(25, new Point(12, 0), new Point(12, 2));
+	    
+	    return new State(new Point(13, 6), cars, new Point(12, 2));
 	}
 }
