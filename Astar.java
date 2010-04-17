@@ -21,6 +21,7 @@ public class Astar implements Runnable {
 		
 		initial.setHeuristic(heuristic);
 		queue.offer(initial);
+		visited.put(initial, true);
 	}
 	
 	public void run() {
@@ -40,7 +41,6 @@ public class Astar implements Runnable {
 					return;
 				}
 				
-				visited.put(state, true);
 				addNeighbors(state);
 			}
 		} catch(InterruptedException e) {
@@ -99,6 +99,7 @@ public class Astar implements Runnable {
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						queue.offer(clone);
+						visited.put(clone, true);
 						if(DEBUG) {
 							System.out.printf("Hor1:\n");
 							System.out.println(state);
@@ -117,6 +118,7 @@ public class Astar implements Runnable {
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						queue.offer(clone);
+						visited.put(clone, true);
 						if(DEBUG) {
 							System.out.printf("Hor2:\n");
 							System.out.println(state);
@@ -140,6 +142,7 @@ public class Astar implements Runnable {
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						queue.offer(clone);
+						visited.put(clone, true);
 						if(DEBUG) {
 							System.out.printf("Ver1:\n");
 							System.out.println(state);
@@ -158,6 +161,7 @@ public class Astar implements Runnable {
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						queue.offer(clone);
+						visited.put(clone, true);
 						if(DEBUG) {
 							System.out.printf("Ver2:\n");
 							System.out.println(state);
