@@ -1,19 +1,21 @@
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.PriorityQueue;
 
 
 public class Astar {
 	private HashMap<State, Boolean> visited;
 	private PriorityQueue<State> queue;
-	private static boolean DEBUG = false;
+	private boolean DEBUG;
 	
-	public Astar(State initial, Heuristic heuristic) {
+	public Astar(State initial, Heuristic heuristic, boolean debug) {
 		visited = new HashMap<State, Boolean>();
 		queue = new PriorityQueue<State>();
 		
+		DEBUG = debug;
+		
 		initial.setHeuristic(heuristic);
 		queue.offer(initial);
+		visited.put(initial, true);
 	}
 	
 	public int run() {
@@ -28,7 +30,6 @@ public class Astar {
 				return state.getSteps() + 1;
 			}
 			
-			visited.put(state, true);
 			addNeighbors(state);
 		}
 		
@@ -76,6 +77,7 @@ public class Astar {
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						queue.offer(clone);
+						visited.put(clone, true);
 						if(DEBUG) {
 							System.out.printf("Hor1:\n");
 							System.out.println(state);
@@ -94,6 +96,7 @@ public class Astar {
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						queue.offer(clone);
+						visited.put(clone, true);
 						if(DEBUG) {
 							System.out.printf("Hor2:\n");
 							System.out.println(state);
@@ -117,6 +120,7 @@ public class Astar {
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						queue.offer(clone);
+						visited.put(clone, true);
 						if(DEBUG) {
 							System.out.printf("Ver1:\n");
 							System.out.println(state);
@@ -132,20 +136,10 @@ public class Astar {
 				while(y2 < state.getDimensions().getY() && !map[x][y2]) {
 					c.getStart().setY(y1);
 					c.getEnd().setY(y2);
-					if(DEBUG) {
-						System.out.printf("Contains key: %b\n", visited.containsKey(state));
-						System.out.println("Visited contents:");
-						Iterator<State> it = visited.keySet().iterator();
-						while(it.hasNext()) {
-							State next = it.next();
-							System.out.printf("Hash codes: %d, %d\n", state.hashCode(), next.hashCode());
-							System.out.printf("State equals next: %b\n", state.equals(next));
-						}
-						System.out.println("Visited contents end\n");
-					}
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						queue.offer(clone);
+						visited.put(clone, true);
 						if(DEBUG) {
 							System.out.printf("Ver2:\n");
 							System.out.println(state);
