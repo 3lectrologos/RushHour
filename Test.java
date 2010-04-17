@@ -47,8 +47,6 @@ public class Test {
 			state = state11();
 			break;
 		}
-		
-		boolean debug = false;
 	    
 	    Astar a = new Astar(state, new SimpleHeuristic(), nthreads);
 	    System.out.println("Initial state:");
