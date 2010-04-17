@@ -37,8 +37,7 @@ public class Astar implements Runnable {
 				if(state == null)
 					return;
 				if(State.isFinal(state)) {
-					System.out.printf("Thread %s: %d\n", Thread.currentThread().getName(), state.getSteps() + 1);
-					return;
+					result(state.getSteps() + 1);
 				}
 				
 				addNeighbors(state);
@@ -49,6 +48,11 @@ public class Astar implements Runnable {
 			System.out.println("Broken barrier");
 			return;
 		}
+	}
+	
+	private synchronized void result(int result) {
+		System.out.println(result);
+		System.exit(0);
 	}
 	
 	private boolean[][] createMap(State state, int sizex, int sizey) {
