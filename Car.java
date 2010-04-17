@@ -31,6 +31,10 @@ public class Car {
 		return (start.getX() <= line) && (end.getX() >= line);
 	}
 	
+	public int getId() {
+		return id;
+	}
+	
 	public Point getStart() {
 		return start;
 	}

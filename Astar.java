@@ -29,15 +29,15 @@ public class Astar implements Runnable {
 			barrier.await();
 			while(true) {
 				State state;
-					state = queue.poll(50, TimeUnit.MILLISECONDS);
+					state = queue.poll(1000, TimeUnit.MILLISECONDS);
 				if(DEBUG) {
 					System.out.printf("---- Loop (visited size = %d) Queue poll:\n", visited.size());
 					System.out.println(state);
 				}
 				if(state == null)
-					return;
+					result(state, -1);
 				if(State.isFinal(state)) {
-					result(state.getSteps() + 1);
+					result(state, state.getSteps() + 1);
 				}
 				
 				addNeighbors(state);
@@ -50,7 +50,8 @@ public class Astar implements Runnable {
 		}
 	}
 	
-	private synchronized void result(int result) {
+	private synchronized void result(State state, int result) {
+		System.out.println(state);
 		System.out.println(result);
 		System.exit(0);
 	}

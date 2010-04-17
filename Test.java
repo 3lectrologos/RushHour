@@ -46,6 +46,9 @@ public class Test {
 		case 11:
 			state = state11();
 			break;
+		case 12:
+			state = state12();
+			break;
 		}
 	    
 	    Astar a = new Astar(state, new SimpleHeuristic(), nthreads);
@@ -251,5 +254,24 @@ public class Test {
 	    cars[24] = new Car(25, new Point(12, 0), new Point(12, 2));
 	    
 	    return new State(new Point(13, 6), cars, new Point(12, 2));
+	}
+
+	private static State state12() {
+		Car[] cars = new Car[13];
+		cars[0] = new Car(0, new Point(2, 2), new Point(3, 2));
+		cars[1] = new Car(1, new Point(0, 1), new Point(0, 2));
+		cars[2] = new Car(2, new Point(1, 4), new Point(1, 5));
+		cars[3] = new Car(3, new Point(2, 3), new Point(2, 4));
+		cars[4] = new Car(4, new Point(3, 0), new Point(3, 1));
+		cars[5] = new Car(5, new Point(4, 0), new Point(4, 2));
+		cars[6] = new Car(6, new Point(5, 0), new Point(5, 2));
+		cars[7] = new Car(7, new Point(0,0), new Point(2, 0));
+		cars[8] = new Car(8, new Point(1, 1), new Point(2, 1));
+		cars[9] = new Car(9, new Point(0, 3), new Point(1, 3));
+		cars[10] = new Car(10, new Point(4, 4), new Point(5, 4));
+		cars[11] = new Car(11, new Point(2, 5), new Point(3, 5));
+		cars[12] = new Car(12, new Point(4, 5), new Point(5, 5));
+	   
+		return new State(new Point(6, 6), cars, new Point(5, 2));
 	}
 }

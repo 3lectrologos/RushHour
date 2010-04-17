@@ -7,5 +7,4 @@ public class SimpleHeuristic extends Heuristic {
 	public int eval(State state) {
 		return State.blockingCars(state);
 	}
-
 }

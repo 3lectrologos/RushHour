@@ -166,11 +166,11 @@ public class State implements Comparable<State> {
 			Car c = cars[k];
 			if(c.isHorizontal()) {
 				for(int i = c.getStart().getX(); i <= c.getEnd().getX(); i++)
-					map[i][c.getStart().getY()] = k;
+					map[i][c.getStart().getY()] = cars[k].getId();
 			}
 			else {
 				for(int i = c.getStart().getY(); i <= c.getEnd().getY(); i++)
-					map[c.getStart().getX()][i] = k;
+					map[c.getStart().getX()][i] = cars[k].getId();
 			}
 		}
 		
