@@ -2,43 +2,47 @@
 public class Test {
 	public static void main(String args[]) {
 		int arg, nthreads;
-		if(args.length > 0)
-			arg= Integer.parseInt(args[0]);
-		else
-			arg = 7;
-		if(args.length > 1)
-			nthreads = Integer.parseInt(args[1]);
-		else
-			nthreads = 4;
+		try {
+			if(args.length != 2) {
+				throw new Exception();
+			}
+			nthreads= Integer.parseInt(args[0]);
+			arg = Integer.parseInt(args[1]);
 
-		State state = state1();
-		switch(arg) {
-		case 1:
-			state = state1();
-			break;
-		case 2:
-			state = state2();
-			break;
-		case 3:
-			state = state3();
-			break;
-		case 4:
-			state = state4();
-			break;
-		case 5:
-			state = state5();
-			break;
-		case 6:
-			state = state6();
-			break;
-		case 7:
-			state = state7();
-			break;
-		case 8:
-			state = state8();
-			break;
-		}
-	    
+      if(arg > 8)
+        arg = 1;
+
+			System.out.printf("Running test %d using %d thread(s).\n", arg, nthreads);
+			System.out.println("---------------------------------");
+			
+			State state = state1();
+			switch(arg) {
+			case 1:
+				state = state1();
+				break;
+			case 2:
+				state = state2();
+				break;
+			case 3:
+				state = state3();
+				break;
+			case 4:
+				state = state4();
+				break;
+			case 5:
+				state = state5();
+				break;
+			case 6:
+				state = state6();
+				break;
+			case 7:
+				state = state7();
+				break;
+			case 8:
+				state = state8();
+				break;
+			}
+		    
 	    Astar a = new Astar(state, new SimpleHeuristic(), nthreads);
 	    System.out.println("Initial state:");
 	    System.out.println(state);
@@ -46,6 +50,11 @@ public class Test {
 	    for(int i = 0; i < nthreads; i++) {
 		    (new Thread(a)).start();
 	    }
+	    
+		} catch(Exception e) {
+			System.err.println("Wrong arguments. Need two integers: nthreads ntest.");
+			System.exit(1);
+		}
 	}
 	
 	private static State state1() {
