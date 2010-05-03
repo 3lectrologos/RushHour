@@ -1,30 +1,35 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Scanner;
 
 
 public class ArgParser {
+	private Scanner scanner;
+	
 	public ArgParser() {
+		scanner = new Scanner(System.in);
+		scanner.useDelimiter("[ \\n\\r\\t,)(\\[\\];]+");
 	}
 	
-	public State parse(String sx, String sy, String ex, String carlist) {
-		int sizex = Integer.parseInt(sx);
-		int sizey = Integer.parseInt(sy);
+	public int parseInt() {
+		return Integer.parseInt(scanner.next());
+	}
+	
+	public State parseState() {
+		int sizex = parseInt();
+		int sizey = parseInt();
 		
-		StringTokenizer tok = new StringTokenizer(ex, "(),");
-		int exitx = Integer.parseInt(tok.nextToken());
-		int exity = Integer.parseInt(tok.nextToken());
+		int exitx = parseInt();
+		int exity = parseInt();
 
-		tok = new StringTokenizer(carlist, "[](), \n\t\r;");
 		int i = 0;
 		List<Car> cars = new ArrayList<Car>();
-		while(tok.hasMoreTokens()) {
-			int id = Integer.parseInt(tok.nextToken());
-			int startx = Integer.parseInt(tok.nextToken());
-			int starty = Integer.parseInt(tok.nextToken());
-			int endx = Integer.parseInt(tok.nextToken());
-			int endy = Integer.parseInt(tok.nextToken());
-			
+		while(scanner.hasNext()) {
+			int id = parseInt();
+			int startx = parseInt();
+			int starty = parseInt();
+			int endx = parseInt();
+			int endy = parseInt();
 			cars.add(new Car(id, new Point(startx, starty), new Point(endx, endy)));
 		}
 		

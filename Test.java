@@ -37,15 +37,6 @@ public class Test {
 		case 8:
 			state = state8();
 			break;
-		case 9:
-			state = state9();
-			break;
-		case 10:
-			state = state10();
-			break;
-		case 11:
-			state = state11();
-			break;
 		}
 	    
 	    Astar a = new Astar(state, new SimpleHeuristic(), nthreads);
@@ -58,30 +49,6 @@ public class Test {
 	}
 	
 	private static State state1() {
-		Car[] cars = new Car[1];
-	    cars[0] = new Car(0, new Point(0, 1), new Point(1, 1));
-	    
-	    return new State(new Point(3, 3), cars, new Point(2, 1));
-	}
-	
-	private static State state2() {
-		Car[] cars = new Car[2];
-	    cars[0] = new Car(0, new Point(0, 1), new Point(1, 1));
-	    cars[1] = new Car(1, new Point(2, 1), new Point(2, 2));
-	    
-	    return new State(new Point(3, 4), cars, new Point(2, 1));
-	}
-	
-	private static State state3() {
-		Car[] cars = new Car[3];
-	    cars[0] = new Car(0, new Point(0, 1), new Point(1, 1));
-	    cars[1] = new Car(1, new Point(2, 1), new Point(2, 2));
-	    cars[2] = new Car(2, new Point(1, 3), new Point(2, 3));
-	    
-	    return new State(new Point(3, 4), cars, new Point(2, 1));
-	}
-	
-	private static State state4() {
 		Car[] cars = new Car[8];
 	    cars[0] = new Car(0, new Point(1, 2), new Point(2, 2));
 	    cars[1] = new Car(1, new Point(0, 0), new Point(1, 0));
@@ -95,7 +62,7 @@ public class Test {
 	    return new State(new Point(6, 6), cars, new Point(5, 2));
 	}
 
-	private static State state5() {
+	private static State state2() {
 		Car[] cars = new Car[10];
 	    cars[0] = new Car(0, new Point(1, 2), new Point(2, 2));
 	    cars[1] = new Car(1, new Point(0, 0), new Point(0, 2));
@@ -111,7 +78,7 @@ public class Test {
 	    return new State(new Point(6, 6), cars, new Point(5, 2));
 	}
 	
-	private static State state6() {
+	private static State state3() {
 		Car[] cars = new Car[13];
 	    cars[0] = new Car(0, new Point(0, 2), new Point(1, 2));
 	    cars[1] = new Car(1, new Point(4, 0), new Point(5, 0));
@@ -131,7 +98,7 @@ public class Test {
 	    return new State(new Point(6, 6), cars, new Point(5, 2));
 	}
 	
-	private static State state7() {
+	private static State state4() {
 		Car[] cars = new Car[11];
 	    cars[0] = new Car(0, new Point(1, 2), new Point(2, 2));
 	    cars[1] = new Car(1, new Point(0, 0), new Point(1, 0));
@@ -149,7 +116,7 @@ public class Test {
 	    return new State(new Point(6, 6), cars, new Point(5, 2));
 	}
 	
-	private static State state8() {
+	private static State state5() {
 		Car[] cars = new Car[11];
 	    cars[0] = new Car(0, new Point(0, 2), new Point(1, 2));
 	    cars[1] = new Car(1, new Point(0, 0), new Point(1, 0));
@@ -167,7 +134,7 @@ public class Test {
 	    return new State(new Point(6, 6), cars, new Point(5, 2));
 	}
 
-	private static State state9() {
+	private static State state6() {
 		Car[] cars = new Car[13];
 	    cars[0] = new Car(0, new Point(3, 2), new Point(4, 2));
 	    cars[1] = new Car(1, new Point(0, 0), new Point(0, 2));
@@ -187,8 +154,8 @@ public class Test {
 	    return new State(new Point(6, 6), cars, new Point(5, 2));
 	}
 
-	// hardest 6x6
-	private static State state10() {
+	/* Hardest 6x6 */
+	private static State state7() {
 		Car[] cars = new Car[13];
 		cars[0] = new Car(0, new Point(2, 2), new Point(3, 2));
 		cars[1] = new Car(1, new Point(0, 1), new Point(0, 2));
@@ -207,7 +174,8 @@ public class Test {
 		return new State(new Point(6, 6), cars, new Point(5, 2));
 	}
 	
-	private static State state11() {
+	/* Big one by Manolis Liosis. */
+	private static State state8() {
 		Car[] cars = new Car[15];
 		
 		cars[0] = new Car(0, new Point(1,5), new Point(3,5));
