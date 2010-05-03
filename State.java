@@ -1,12 +1,15 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Formatter;
+import java.util.List;
+import java.util.Map;
 
 
 public class State implements Comparable<State> {
 	private Point dimensions;
 	private Point exit;
 	private Car[] cars;
-	private int steps;			// Steps taken from initial state
+	private int steps;
 	Heuristic heuristic;
 	
 	public State(Point dimensions, Car[] cars, Point exit) {
@@ -31,7 +34,7 @@ public class State implements Comparable<State> {
 		}
 		State result = new State(dimensions,
 				                 carsClone,
-				                 new Point(exit.getX(), exit.getY()),
+				                 exit,
 				                 steps);
 		result.setHeuristic(heuristic);
 		return result;
@@ -87,8 +90,6 @@ public class State implements Comparable<State> {
 	}
 	
 	public static boolean exitIsHorizontal(State state) {
-		if(state == null)
-			System.out.println("Debug state == null");
 		return (state.exit.getX() == 0) || (state.exit.getX() == state.dimensions.getX() - 1);
 	}
 
@@ -188,5 +189,111 @@ public class State implements Comparable<State> {
 			sb.append("\n");
 		}
 		return sb.toString();
+	}
+	
+	private static boolean[][] createMap(State state, int sizex, int sizey) {
+		boolean[][] map = new boolean[sizex][sizey];
+		Car[] cars = state.getCars();
+		
+		for(int i = 0; i < sizex; i++) {
+			for(int j = 0; j < sizey; j++) {
+				map[i][j] = false;
+			}
+		}
+		
+		/* 2-D map, true if occupied by car, false otherwise */
+		for(Car c : cars) {
+			if(c.isHorizontal()) {
+				for(int i = c.getStart().getX(); i <= c.getEnd().getX(); i++)
+					map[i][c.getStart().getY()] = true;
+			}
+			else {
+				for(int i = c.getStart().getY(); i <= c.getEnd().getY(); i++)
+					map[c.getStart().getX()][i] = true;
+			}
+		}
+		
+		return map;
+	}
+	
+	public static List<State> findNeighbors(Map<State, Boolean> visited, State conststate) {
+		List<State> neighbors = new ArrayList<State>();
+		State state = conststate.clone();
+		state.setSteps(state.getSteps() + 1);
+		int sizex = state.getDimensions().getX(),
+		    sizey = state.getDimensions().getY();
+		Car[] cars = state.getCars();
+		boolean[][] map = createMap(state, sizex, sizey);
+		
+		for(int i = 0; i < cars.length; i++) {
+			Car c = cars[i];
+			if(c.isHorizontal()) {
+				int initx1 = c.getStart().getX(),
+				    initx2 = c.getEnd().getX(),
+				    x1 = initx1 - 1,
+			        x2 = initx2 - 1,
+			        y = c.getStart().getY();
+			
+				while(x1 >= 0 && !map[x1][y]) {
+					c.getStart().setX(x1);
+					c.getEnd().setX(x2);
+					if(!visited.containsKey(state)) {
+						State clone = state.clone();
+						neighbors.add(clone);
+					}
+					c.getStart().setX(initx1);
+					c.getEnd().setX(initx2);
+					x1--; x2--;
+				}
+				
+				x1 = initx1 + 1;
+				x2 = initx2 + 1;
+				while(x2 < state.getDimensions().getX() && !map[x2][y]) {
+					c.getStart().setX(x1);
+					c.getEnd().setX(x2);
+					if(!visited.containsKey(state)) {
+						State clone = state.clone();
+						neighbors.add(clone);
+					}
+					c.getStart().setX(initx1);
+					c.getEnd().setX(initx2);
+					x1++; x2++;
+				}
+			}
+			else {
+				int inity1 = c.getStart().getY(),
+		        	inity2 = c.getEnd().getY(),
+				    y1 = inity1 - 1,
+			        y2 = inity2 - 1,
+			        x = c.getStart().getX();
+			
+				while(y1 >= 0 && !map[x][y1]) {
+					c.getStart().setY(y1);
+					c.getEnd().setY(y2);
+					if(!visited.containsKey(state)) {
+						State clone = state.clone();
+						neighbors.add(clone);
+					}
+					c.getStart().setY(inity1);
+					c.getEnd().setY(inity2);
+					y1--; y2--;
+				}
+				
+				y1 = inity1 + 1;
+				y2 = inity2 + 1;
+				while(y2 < state.getDimensions().getY() && !map[x][y2]) {
+					c.getStart().setY(y1);
+					c.getEnd().setY(y2);
+					if(!visited.containsKey(state)) {
+						State clone = state.clone();
+						neighbors.add(clone);
+					}
+					c.getStart().setY(inity1);
+					c.getEnd().setY(inity2);
+					y1++; y2++;
+				}
+			}
+		}
+		return neighbors;
 	}
 }
