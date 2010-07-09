@@ -86,7 +86,8 @@ public class State implements Comparable<State> {
 	public boolean equals(State state) {
 		return dimensions.equals(state.dimensions) &&
 		       exit.equals(state.exit) &&
-		       Arrays.equals(cars, state.cars);
+		       Arrays.equals(cars, state.cars) &&
+		       state.compareTo(this) == 0;
 	}
 	
 	public static boolean exitIsHorizontal(State state) {
