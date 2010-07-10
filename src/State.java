@@ -86,8 +86,7 @@ public class State implements Comparable<State> {
 	public boolean equals(State state) {
 		return dimensions.equals(state.dimensions) &&
 		       exit.equals(state.exit) &&
-		       Arrays.equals(cars, state.cars) &&
-		       state.compareTo(this) == 0;
+		       Arrays.equals(cars, state.cars);
 	}
 	
 	public static boolean exitIsHorizontal(State state) {
@@ -217,7 +216,7 @@ public class State implements Comparable<State> {
 		return map;
 	}
 	
-	public static List<State> findNeighbors(Map<State, Boolean> visited, State conststate) {
+	public static synchronized List<State> findNeighbors(Map<State, State> visited, State conststate) {
 		List<State> neighbors = new ArrayList<State>();
 		State state = conststate.clone();
 		state.setSteps(state.getSteps() + 1);
@@ -242,6 +241,14 @@ public class State implements Comparable<State> {
 						State clone = state.clone();
 						neighbors.add(clone);
 					}
+					else {
+						State vis = visited.get(state);
+						if(vis.compareTo(state) == 1) {
+							visited.remove(state);
+							State clone = state.clone();
+							neighbors.add(clone);
+						}
+					}
 					c.getStart().setX(initx1);
 					c.getEnd().setX(initx2);
 					x1--; x2--;
@@ -255,6 +262,14 @@ public class State implements Comparable<State> {
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						neighbors.add(clone);
+					}
+					else {
+						State vis = visited.get(state);
+						if(vis.compareTo(state) == 1) {
+							visited.remove(state);
+							State clone = state.clone();
+							neighbors.add(clone);
+						}
 					}
 					c.getStart().setX(initx1);
 					c.getEnd().setX(initx2);
@@ -275,6 +290,14 @@ public class State implements Comparable<State> {
 						State clone = state.clone();
 						neighbors.add(clone);
 					}
+					else {
+						State vis = visited.get(state);
+						if(vis.compareTo(state) == 1) {
+							visited.remove(state);
+							State clone = state.clone();
+							neighbors.add(clone);
+						}
+					}
 					c.getStart().setY(inity1);
 					c.getEnd().setY(inity2);
 					y1--; y2--;
@@ -288,6 +311,14 @@ public class State implements Comparable<State> {
 					if(!visited.containsKey(state)) {
 						State clone = state.clone();
 						neighbors.add(clone);
+					}
+					else {
+						State vis = visited.get(state);
+						if(vis.compareTo(state) == 1) {
+							visited.remove(state);
+							State clone = state.clone();
+							neighbors.add(clone);
+						}
 					}
 					c.getStart().setY(inity1);
 					c.getEnd().setY(inity2);

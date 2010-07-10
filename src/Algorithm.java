@@ -6,7 +6,7 @@ import java.util.concurrent.CyclicBarrier;
 
 
 public abstract class Algorithm implements Runnable {
-	protected static Map<State, Boolean> visited;
+	protected static Map<State, State> visited;
 	protected static BlockingQueue<State> queue;
 	protected static boolean DEBUG = false;
 	protected static CyclicBarrier barrier;
@@ -16,7 +16,7 @@ public abstract class Algorithm implements Runnable {
 		
 		while(iter.hasNext()) {
 			State next = iter.next();
-			visited.put(next, true);
+			visited.put(next, next);
 			queue.offer(next);
 		}
 	}

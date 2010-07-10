@@ -8,13 +8,13 @@ import java.util.concurrent.TimeUnit;
 
 public class Bfs extends Algorithm {
 	public Bfs(State initial, Heuristic heuristic, int nthreads) {
-		visited = Collections.synchronizedMap(new HashMap<State, Boolean>());
+		visited = Collections.synchronizedMap(new HashMap<State, State>());
 		queue = new LinkedBlockingQueue<State>();
 		barrier = new CyclicBarrier(nthreads);
 		
 		initial.setHeuristic(heuristic);
 		queue.offer(initial);
-		visited.put(initial, true);
+		visited.put(initial, initial);
 	}
 	
 	public void run() {
